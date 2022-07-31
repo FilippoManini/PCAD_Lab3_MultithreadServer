@@ -40,7 +40,7 @@ public class WorkerRunnable implements Runnable
 					return;
 				}
 
-				//TODO: Send the available events list
+				// Send the available events list if needed
 				if(line.contains("eventList")) {
 					out.println(e.formatEventList());
 					System.out.printf(" Sent from the client: %s\n", line);
@@ -50,7 +50,7 @@ public class WorkerRunnable implements Runnable
 				// writing the received message from client
 				StringTokenizer st = new StringTokenizer(line, " ");
 
-				// Prenota
+				// Booking
 				var name = st.nextToken();
 				var nSeat = Integer.parseInt(st.nextToken());
 				var bookingReply = e.book(name, nSeat);

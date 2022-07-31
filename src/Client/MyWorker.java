@@ -11,9 +11,12 @@ public class MyWorker extends SwingWorker<String, Integer> {
     String bookingResult = null;
 
     private final GUI gui;
+    private String bttName;
+    String eventList = "";
 
-    public MyWorker(GUI gui){
+    public MyWorker(GUI gui, String bttName){
         this.gui = gui;
+        this.bttName = bttName;
     }
 
     @Override
@@ -31,15 +34,25 @@ public class MyWorker extends SwingWorker<String, Integer> {
             if(gui.tf_eventName.getText().equals("exit"))
                 gui.dispose();
 
+            else if(bttName.equals("book")) {
             // Booking request: "name + num"
-            String line = gui.tf_eventName.getText() + " " + gui.tf_eventSeats.getText();
-
-            // sending the user input to server
-            out.println(line);
-            out.flush();
-
-            // save server reply
-            bookingResult = "Server replied:\n→ "+ in.readLine();
+	            String line = gui.tf_eventName.getText() + " " + gui.tf_eventSeats.getText();
+	
+	            // sending the user input to server
+	            out.println(line);
+	            out.flush();
+	
+	            // save server reply
+	            bookingResult = "Server replied:\n"+ in.readLine();
+            }
+            
+            else if(bttName.equals("eventList"))
+            {
+            	out.println("eventList");
+                out.flush();
+                eventList += in.readLine();
+                eventList = eventList.replace("&", "\n");
+            }
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -50,10 +63,15 @@ public class MyWorker extends SwingWorker<String, Integer> {
     // Update UI values
     @Override
     protected void done(){
-        // Update result value
-        gui.ta_bookingReturn.setText(bookingResult);
-
-        // Enable button
-        gui.btt_book.setEnabled(true);
+    	if(bttName.equals("book")) {
+	        // Update result value
+	        gui.ta_bookingReturn.setText(bookingResult);
+	        // Enable button
+	        gui.btt_book.setEnabled(true);
+    	}
+    	else if(bttName.equals("eventList")) {
+    		gui.ta_eventList.setText(eventList);
+            gui.btt_eventList.setEnabled(true);
+    	}
     }
 }

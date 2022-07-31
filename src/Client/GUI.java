@@ -3,20 +3,15 @@ package Client;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.io.Serial;
 
 public class GUI extends JFrame{
 
-    @Serial
     private static final long serialVersionUID = 1L;
     JButton btt_eventList;                      // Button to print the event list
     JButton btt_book;                           // Button to book the seats
     JLabel l1, l2;                              // Panel label
     JTextField tf_eventName, tf_eventSeats;       // Name and num of seats of the event to book
     JTextArea ta_eventList, ta_bookingReturn;     // Event list
-
-    //TODO: Remove
-    String eventList = "event0\t10\nevent1\t10\nevent2\t10\nevent3\t10\nevent4\t10\nevent5\t10\nevent6\t10\nevent7\t10\nevent8\t10\nevent9\t10\nevent10\t10";
 
     public GUI(){
         super("Client GUI");
@@ -31,7 +26,7 @@ public class GUI extends JFrame{
         ta_eventList.setEditable(false);
         ta_eventList.setPreferredSize(new Dimension(200, 200));
         btt_eventList = new JButton("Show Available events");
-        MyListener2 event_handler = new MyListener2(this);
+        MyListener event_handler = new MyListener(this, "eventList");
         btt_eventList.addActionListener(event_handler);
 
 
@@ -59,7 +54,7 @@ public class GUI extends JFrame{
         tf_eventSeats = new JTextField("");
         // Button and its handler
         btt_book = new JButton("Book event");
-        MyListener book_handler = new MyListener(this);
+        MyListener book_handler = new MyListener(this, "book");
         btt_book.addActionListener(book_handler);
         // Result
         ta_bookingReturn = new JTextArea();

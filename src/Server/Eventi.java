@@ -9,16 +9,15 @@ public class Eventi
     private final ConcurrentHashMap<String, Integer> eventi;
     public Eventi() { eventi = new ConcurrentHashMap<>(); }
 
-    //Crea un nuovo evento e i relativi posti solo se non esiste già
+    // Create the given event with posti seats if does not already exist
     public void create(String nome, Integer posti)
     {
         eventi.putIfAbsent(nome,posti);
     }
 
-    //per aggiungere nuovi posti ad un determinato evento
+    // Add seats to a given event
     public void add(String nome, int posti)
     {
-        //se non esite
         synchronized (this) {
             if (eventi.get(nome) == null)
                 return;
@@ -26,8 +25,7 @@ public class Eventi
         eventi.replace(nome, eventi.get(nome) +posti);
     }
 
-    //per prenotare posti per un dato evento,
-    //il metodo deve essere bloccante se non ci sono abbastanza posti
+    // To book events
     public String book(String nome, int posti)
     {
         synchronized(this) {
@@ -42,7 +40,7 @@ public class Eventi
         synchronized (this){return "Seats booked";}
     }
 
-    //cancella tutti gli eventi e sblocca tutti i clienti in attesa di post
+    // Delete all events and unlock awaiting clients
     public void close()
     {
         eventi.clear();
@@ -50,7 +48,7 @@ public class Eventi
         synchronized(this) {this.notifyAll();}
     }
 
-    //per visualizzare su console eventi e posti ancora disponibili
+    // To visualize final event list on the server
     public synchronized String printEventList()
     {
         String s = "Event Name\tAvailable Seats\n";

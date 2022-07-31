@@ -31,12 +31,11 @@ public class ThreadPooledServer implements Runnable
 		}
 		
 		try{ this.serverSocket = new ServerSocket(this.serverPort); }
-		catch (IOException e) { throw new RuntimeException("Cannot open port 8080", e); }
+		catch (IOException e) { throw new RuntimeException("Cannot open port "+serverPort, e); }
 		
 		System.out.println("Server is Running!\n");
 
-		// creazione eventi
-		// TODO: Create multiple events
+		// Events creation
 		for(int i=0; i<10; i++)
 		{
 			e.create("Event"+i, 10);
@@ -61,7 +60,7 @@ public class ThreadPooledServer implements Runnable
 			 executor.execute(new WorkerRunnable(clientSocket, e));
 		}
 
-		// Quando viene stoppato non accettiamo piu richieste ma finiamo quelle attuali
+		// When it is stopped we no longer accept requests but we finish the current ones
 		executor.shutdown();
 
 		System.out.println("Server Stopped.");
